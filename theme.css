@@ -1,0 +1,21 @@
+.button {
+  padding: 0.5em 1.5em;
+  border-style: solid;
+  border-radius: 0.25em;
+  border-width: 1px;
+  border-color: #919191;
+  box-shadow: none;
+  background-color: white;
+  outline: none;
+}
+
+button:hover {
+  background-color: #d1ccd1;
+}
+
+button.disabled:hover,
+button.disabled {
+  border-color: grey;
+  background-color: white;
+  color: grey;
+}

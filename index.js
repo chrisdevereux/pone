@@ -2,3 +2,8 @@ import widget from './src/widget';
 import {
   compose, sequence, bindChild, flags, enableIf, wrap
 } from './src/prop-traits';
+
+export default widget;
+export {
+  compose, sequence, bindChild, flags, enableIf, wrap
+};

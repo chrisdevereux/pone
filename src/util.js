@@ -1,10 +1,11 @@
 import compact from 'lodash/array/compact';
+import flatten from 'lodash/array/flattenDeep';
 import mapValues from 'lodash/object/mapValues';
 import pick from 'lodash/object/pick';
 import isArray from 'lodash/lang/isArray';
-import isArray from 'lodash/function/compose';
+import compose from 'lodash/function/compose';
 
-export {compact, mapValues, pick, isArray, compose};
+export {compact, flatten, mapValues, pick, isArray, compose};
 
 export function funcify(x) {
   if (typeof x === 'function') return x;

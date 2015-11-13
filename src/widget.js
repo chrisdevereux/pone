@@ -1,5 +1,5 @@
 import {createElement, PropTypes} from 'react';
-import {compact, mapValues, pick, arrayify, funcify, stripUndefined} from './util';
+import {compact, flatten, mapValues, pick, arrayify, funcify, stripUndefined} from './util';
 
 export default function widget({type, name, css, style, defaults, propTypes, ...propTransforms}) {
   defaults = defaults || {};
@@ -24,7 +24,7 @@ export default function widget({type, name, css, style, defaults, propTypes, ...
       ...mapValues(propTransforms, transformProps(inputProps))
     };
 
-    const mergedClasses = compact(cssTransforms.map(transformProps(inputProps)));
+    const mergedClasses = compact(flatten(cssTransforms.map(transformProps(inputProps))));
     const mergedStyle = mapValues(styleTransforms, transformProps(inputProps));
 
     const props = {
