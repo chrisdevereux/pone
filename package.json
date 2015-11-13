@@ -1,7 +1,7 @@
 {
-  "name": "new-project",
+  "name": "rapid-react",
   "version": "0.1.0",
-  "description": "",
+  "description": "A library for quickly creating and composing React components, with optional base widget set",
   "author": "Chris Devereux",
   "license": "ISC",
   "dependencies": {
@@ -9,11 +9,13 @@
     "react": "^0.14.2",
     "react-dom": "^0.14.2"
   },
+  "main": "index.js",
   "devDependencies": {
     "babel-core": "^6.1.4",
     "babel-eslint": "^4.1.5",
     "babel-loader": "^6.1.0",
     "babel-plugin-react-transform": "^1.1.1",
+    "babel-polyfill": "^6.1.19",
     "babel-preset-es2015": "^6.1.4",
     "babel-preset-react": "^6.1.4",
     "babel-preset-stage-2": "^6.1.2",

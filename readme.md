@@ -1,1 +1,1 @@
-.
+rapid-react

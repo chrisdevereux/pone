@@ -1,9 +1,5 @@
 import {createElement, PropTypes} from 'react';
-
-import compact from 'lodash/array/compact';
-import mapValues from 'lodash/object/mapValues';
-import pick from 'lodash/object/pick';
-import isArray from 'lodash/lang/isArray';
+import {compact, mapValues, pick, arrayify, funcify, stripUndefined} from './util';
 
 export default function widget({type, name, css, style, defaults, propTypes, ...propTransforms}) {
   defaults = defaults || {};
@@ -55,33 +51,4 @@ export default function widget({type, name, css, style, defaults, propTypes, ...
 
 function transformProps(props) {
   return (transform, index) => transform(props, index);
-}
-
-function funcify(x) {
-  if (typeof x === 'function') return x;
-  else return () => x;
-}
-
-function stripUndefined(object) {
-  for (const key of Object.keys(object)) {
-    if (typeof object[key] === 'undefined') {
-      delete object[key];
-    }
-  }
-}
-
-function arrayify(children) {
-  if (!exists(children)) {
-    return [];
-
-  } else if (isArray(children)) {
-    return children;
-
-  } else {
-    return compact([children]);
-  }
-}
-
-function exists(x) {
-  return (typeof x !== 'undefined') && (x !== false) && (x !== null);
 }
