@@ -3,9 +3,8 @@ import flatten from 'lodash/array/flattenDeep';
 import mapValues from 'lodash/object/mapValues';
 import pick from 'lodash/object/pick';
 import isArray from 'lodash/lang/isArray';
-import compose from 'lodash/function/compose';
 
-export {compact, flatten, mapValues, pick, isArray, compose};
+export {compact, flatten, mapValues, pick, isArray};
 
 export function funcify(x) {
   if (typeof x === 'function') return x;

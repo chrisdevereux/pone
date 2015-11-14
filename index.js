@@ -1,9 +1,5 @@
 import widget from './src/widget';
-import {
-  compose, sequence, bindChild, flags, enableIf, wrap
-} from './src/prop-traits';
+import * as propTraits from './src/prop-traits';
 
 export default widget;
-export {
-  compose, sequence, bindChild, flags, enableIf, wrap
-};
+export {propTraits};

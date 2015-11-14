@@ -1,33 +1,33 @@
 import {createElement} from 'react';
-import {mapValues, compact, arrayify, compose} from './util';
+import {mapValues, compact, arrayify} from './util';
 
-export {compose};
+export function compose(...fns) {
+  return (value, props) =>
+    fns.reduce((value, fn) => fn(value, props), value)
+  ;
+}
 
 export function sequence(...fns) {
-  return (parentProps) => fns.map(fn => fn(parentProps));
+  return (value, props) => fns.map(fn => fn(value, props));
 }
 
 export function bindChild(element, bindings = {}) {
-  return (parentProps) => {
-    const {...props, children} = {
-      ...element.props,
-      ...mapValues(bindings, (prop) => parentProps[prop])
-    };
-
-    return createElement(element.type, props, ...arrayify(children));
+  return (value, props) => {
+    const {...boundProps, children} = bindProps(bindings, element, props);
+    return createElement(element.type, boundProps, ...arrayify(children));
   };
 }
 
 export function flags(flags = {}) {
-  return (parentProps) =>
-    compact(Object.keys(flags).map(key => parentProps[key] && flags[key]));
+  return (value, props) =>
+    compact(Object.keys(flags).map(key => props[key] ? flags[key] : undefined));
   ;
 }
 
-export function enableIf(eventKey, predicate) {
-  return (parentProps) => {
-    if (predicate(parentProps)) {
-      return parentProps[eventKey];
+export function enableIf(predicate) {
+  return (value, props) => {
+    if (predicate(props)) {
+      return value;
 
     } else {
       return () => {};
@@ -35,9 +35,23 @@ export function enableIf(eventKey, predicate) {
   }
 }
 
-export function wrap(outer) {
-  const {type} = outer;
-  const {...props, children} = outer.props;
-
-  return (parentProps, key) => createElement(type, props, ...arrayify(parentProps[key]));
+export function preventDefault() {
+  return (value, props) => function(event) {
+    value(event);
+    event.preventDefault();
+  };
 }
+
+export function wrap(element, bindings = {}) {
+  return (value, props) => {
+    const {...boundProps, children} = bindProps(bindings, element, props);
+    return createElement(element.type, boundProps, ...arrayify(value));
+  };
+}
+
+function bindProps(bindings, element, parentProps) {
+  return {
+    ...element.props,
+    ...mapValues(bindings, (prop) => parentProps[prop])
+  };
+};

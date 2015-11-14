@@ -27,8 +27,8 @@ describe('widget', function() {
       defaults: {
         prop1: 1
       },
-      prop2: ({prop1}) => prop1 * 2,
-      children: ({prop1}) => String(prop1)
+      prop2: (_, {prop1}) => prop1 * 2,
+      children: (_, {prop1}) => String(prop1)
     });
 
     it('should render props and children', function() {
@@ -64,10 +64,10 @@ describe('widget', function() {
 
   describe('when dynamic style and css are provided', function() {
     const MyWidget = widget({
-      css: ['my-widget', ({flag}) => (flag && 'important')],
+      css: ['my-widget', (_, {flag}) => (flag && 'important')],
       style: {
         position: 'absolute',
-        display: ({flag}) => (flag && 'table')
+        display: (_, {flag}) => (flag && 'table')
       },
       propTypes: {
         flag: React.PropTypes.boolean
