@@ -17,8 +17,6 @@
 .menu {
   display: block;
   text-align: left;
-  top: auto;
-  margin-top: 0.2em;
   padding: 0px;
 }
 
@@ -51,4 +49,17 @@ button.disabled:hover, button.disabled {
   border-color: grey;
   background-color: white;
   color: grey;
+}
+
+
+/** Dropdown **/
+
+.dropdown {
+  display: inline-block;
+}
+
+.dropdown .menu {
+  position: absolute;
+  margin-top: 0.5em;
+  top: auto;
 }

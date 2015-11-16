@@ -11,6 +11,10 @@ export function sequence(...fns) {
   return (value, props) => fns.map(fn => fn(value, props));
 }
 
+export function represent(key, fn) {
+  return (_, props) => arrayify(props[key]).map(value => fn(value, props));
+}
+
 export function bindChild(element, bindings = {}) {
   return (value, props) => {
     const {...boundProps, children} = bindProps(bindings, element, props);

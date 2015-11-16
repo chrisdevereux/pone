@@ -74,4 +74,12 @@ describe('prop-traits', function() {
       expect(subject([], {a: 1, b: 2})).to.eql([1, 2]);
     });
   });
+
+  describe('represent', function() {
+    it('should represent each item with the transformed value', function() {
+      const subject = traits.represent('items', x => x * 2);
+
+      expect(subject(undefined, {items: [1, 2, 3]})).to.eql([2, 4, 6]);
+    });
+  });
 });

@@ -84,7 +84,7 @@ describe('widget', function() {
       expect(output.type).to.eql(ClosedState);
       expect(output.props.stateDef).to.eql(state);
       expect(output.props.props).to.eql({value: 1});
-      expect(output.props.type).to.eql('button');
+      expect(output.props.type).to.eql(MyWidget);
     });
   });
 
@@ -204,14 +204,25 @@ describe('ClosedState', function() {
     }
   };
 
+  const InnerWidget = widget({
+    name: 'InnerWidget',
+    type: 'input',
+    propTypes: {
+      onChange: React.PropTypes.func,
+      value: React.PropTypes.any
+    }
+  });
+
   it('should create element with defined type and props', function() {
-    const tree = shallowRender(<ClosedState type='input' props={{value: 1}} stateDef={binding}/>);
+    const tree = shallowRender(
+      <ClosedState type={InnerWidget} props={{value: 1}} stateDef={binding}/>
+    );
     expect(tree.getRenderOutput().type).to.eql('input');
     expect(tree.getRenderOutput().props).to.have.property('value', 1);
   });
 
   it('should reflect state changes', function() {
-    const markup = <ClosedState type='input' stateDef={binding}/>;
+    const markup = <ClosedState type={InnerWidget} stateDef={binding}/>;
 
     const tree = shallowRender(markup);
     tree.getRenderOutput().props.onChange('foo');
@@ -222,14 +233,18 @@ describe('ClosedState', function() {
 
   it('should pass props & prev state into binding handler', function() {
     const startProps = {value: 'a', constVal: 'foo'}
-    const tree = shallowRender(<ClosedState props={startProps} type='input' stateDef={binding}/>);
+    const tree = shallowRender(
+      <ClosedState props={startProps} type={InnerWidget} stateDef={binding}/>
+    );
     tree.getRenderOutput().props.onChange('b');
 
-    tree.reRender(<ClosedState props={startProps} type='input' stateDef={{
-      onChange(value, props, setState) {
-        expect(props).to.eql({value: 'b', constVal: 'foo'});
-      }
-    }}/>);
+    tree.reRender(
+      <ClosedState props={startProps} type={InnerWidget} stateDef={{
+        onChange(value, props, setState) {
+          expect(props).to.eql({value: 'b', constVal: 'foo'});
+        }
+      }}/>
+    );
 
     tree.getRenderOutput().props.onChange('foo');
   });

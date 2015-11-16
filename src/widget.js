@@ -18,7 +18,11 @@ export default function widget({type, name, css, style, defaults, propTypes, ...
   const cssTransforms = [...arrayify(type.cssTransforms), ...arrayify(css)].map(funcify)
   const styleTransforms = mapValues({...type.styleTransforms, ...style}, funcify);
 
-  function Widget({...instanceProps, state}) {
+  function Widget({state, ...instanceProps}) {
+    if (state) {
+      return <ClosedState type={Widget} props={instanceProps} stateDef={state}/>;
+    }
+
     const inputProps = pick({...defaults, ...instanceProps}, whitelist);
 
     const {...mergedProps, children, style} = {
@@ -37,16 +41,9 @@ export default function widget({type, name, css, style, defaults, propTypes, ...
       className: (mergedClasses.length !== 0) ? mergedClasses.join(' ') : undefined
     };
 
-    if (state) {
-      const stateProps = {...props, children};
-      stripUndefined(stateProps);
+    stripUndefined(props);
 
-      return <ClosedState type={type} props={stateProps} stateDef={state}/>;
-
-    } else {
-      stripUndefined(props);
-      return createElement(type, props, ...arrayify(children));
-    }
+    return createElement(type, props, ...arrayify(children));
   }
 
   Widget.displayName = name;
@@ -75,7 +72,6 @@ export class ClosedState extends Component {
       (event) => stateHandler(event, currentProps, setState)
     );
 
-    const {children, ...mergedProps} = {...currentProps, ...eventHandlers};
-    return createElement(type, mergedProps, ...arrayify(children));
+    return type({...currentProps, ...eventHandlers});
   }
 }

@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react';
 import widget, {propTraits} from './index';
 
-const {flags, wrap, compose, preventDefault, enableIf} = propTraits;
+const {sequence, flags, wrap, compose, preventDefault, enableIf} = propTraits;
 
 const handleClicked = compose(
   preventDefault(),
@@ -17,6 +17,7 @@ const widgetProps = {
   disabled: PropTypes.bool,
   primary: PropTypes.bool
 };
+
 const clickableProps = {
   onClick: PropTypes.func
 };
@@ -49,4 +50,23 @@ export const MenuItem = widget({
   },
   children: wrap(<a href='#'/>, {onClick: handleClicked}),
   onClick: handleClicked
+});
+
+export const Dropdown = widget({
+  name: 'Dropdown',
+  type: 'div',
+  css: ['dropdown'],
+  propTypes: {
+    ...widgetProps,
+    disclosed: PropTypes.bool,
+    onDisclose: PropTypes.func,
+    title: PropTypes.string.isRequired
+  },
+  defaults: {
+    onDisclose: () => {}
+  },
+  children: (children, {onDisclose, disclosed, title}) => [
+    <Button onClick={onDisclose}>{title} ▾</Button>,
+    disclosed && <Menu>{children}</Menu>
+  ]
 });

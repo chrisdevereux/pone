@@ -1,13 +1,10 @@
 import React, {Component} from 'react';
 import {render} from 'react-dom';
 
-import {Button, Menu, MenuItem} from '../toolkit';
+import {state} from '../index';
+import {Button, Menu, Dropdown, MenuItem} from '../toolkit';
 
 class Demo extends Component {
-  componentWillMount() {
-
-  }
-
   render() {
     const setState = key => value => this.setState({[key]: value});
 
@@ -35,7 +32,16 @@ class Demo extends Component {
               <MenuItem onClick={logEvent('MenuItem2')}>Second</MenuItem>
               <MenuItem onClick={logEvent('MenuItem3')}>Third</MenuItem>
             </Menu>
-            <p>Basic Menu</p>
+            <p>List Box</p>
+          </div>
+
+          <div style={{display: 'table-cell', textAlign: 'center'}}>
+            <Dropdown title='Pick One' state={{onDisclose: state.toggle('disclosed')}}>
+              <MenuItem onClick={logEvent('DropdownItem1')}>First</MenuItem>
+              <MenuItem onClick={logEvent('DropdownItem2')}>Second</MenuItem>
+              <MenuItem onClick={logEvent('DropdownItem3')}>Third</MenuItem>
+            </Dropdown>
+            <p>Dropdown Menu</p>
           </div>
         </div>
       </div>
