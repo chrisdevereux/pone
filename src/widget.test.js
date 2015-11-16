@@ -1,7 +1,7 @@
 import React from 'react';
 import {expect} from 'chai';
 import {shallowRender} from 'skin-deep';
-import widget from './widget';
+import widget, {ClosedState} from './widget';
 
 describe('widget', function() {
   it('should render with minimal config', function() {
@@ -59,6 +59,32 @@ describe('widget', function() {
     it('should render style', function() {
       const tree = shallowRender(<MyWidget/>);
       expect(tree.getRenderOutput().props.style).to.eql({display: 'inline-block'});
+    });
+  });
+
+  describe('when instance captures state', function() {
+    const MyWidget = widget({
+      type: 'button',
+      name: 'MyWidget',
+      propTypes: {
+        value: React.PropTypes.any,
+        onChange: React.PropTypes.func
+      }
+    });
+
+    it('should render stateful node', function() {
+      const state = {
+        onChange(value, props, setState) {
+          valueReceived = value;
+        }
+      };
+
+      const output = shallowRender(<MyWidget state={state} value={1}/>).getRenderOutput();
+
+      expect(output.type).to.eql(ClosedState);
+      expect(output.props.stateDef).to.eql(state);
+      expect(output.props.props).to.eql({value: 1});
+      expect(output.props.type).to.eql('button');
     });
   });
 
@@ -170,3 +196,46 @@ describe('widget', function() {
     });
   });
 });
+
+describe('ClosedState', function() {
+  const binding = {
+    onChange(value, props, setState) {
+      setState({value});
+    }
+  };
+
+  it('should create element with defined type and props', function() {
+    const tree = shallowRender(<ClosedState type='input' props={{value: 1}} stateDef={binding}/>);
+    expect(tree.getRenderOutput().type).to.eql('input');
+    expect(tree.getRenderOutput().props).to.have.property('value', 1);
+  });
+
+  it('should reflect state changes', function() {
+    const markup = <ClosedState type='input' stateDef={binding}/>;
+
+    const tree = shallowRender(markup);
+    tree.getRenderOutput().props.onChange('foo');
+    tree.reRender(markup);
+
+    expect(tree.getRenderOutput().props).to.have.property('value', 'foo');
+  });
+
+  it('should pass props & prev state into binding handler', function() {
+    const startProps = {value: 'a', constVal: 'foo'}
+    const tree = shallowRender(<ClosedState props={startProps} type='input' stateDef={binding}/>);
+    tree.getRenderOutput().props.onChange('b');
+
+    tree.reRender(<ClosedState props={startProps} type='input' stateDef={{
+      onChange(value, props, setState) {
+        expect(props).to.eql({value: 'b', constVal: 'foo'});
+      }
+    }}/>);
+
+    tree.getRenderOutput().props.onChange('foo');
+  });
+});
+
+function descend(tree) {
+  const {type, props} = tree.getRenderOutput();
+  return shallowRender(React.createElement(type, props));
+}
