@@ -1,6 +1,6 @@
 {
   "name": "pone",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A functional wrapper for React's component API and optional base widget toolkit",
   "author": "Chris Devereux",
   "repository": {
