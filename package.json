@@ -1,12 +1,19 @@
 {
-  "name": "rapid-react",
+  "name": "pone",
   "version": "0.1.0",
-  "description": "A library for quickly creating and composing React components, with optional base widget set",
+  "description": "A functional wrapper for React's component API and optional base widget toolkit",
   "author": "Chris Devereux",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chrisdevereux/pone.git"
+  },
   "license": "ISC",
   "dependencies": {
     "lodash": "^3.10.1",
     "react": "^0.14.2",
+    "react-dom": "^0.14.2"
+  },
+  "peerDependencies": {
     "react-dom": "^0.14.2"
   },
   "main": "core/index.js",
