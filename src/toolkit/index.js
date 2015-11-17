@@ -67,7 +67,7 @@ export const MenuItem = widget({
 });
 
 export const RecordView = widget({
-  name: 'Form',
+  name: 'RecordView',
   propTypes: {
     onChange: React.PropTypes.func,
     value: React.PropTypes.any

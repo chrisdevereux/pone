@@ -11,11 +11,6 @@ module.exports = {
         exclude: [/node_modules/, /web_modules/]
       },
       {
-        test: /\.jsx?$/,
-        loaders: ['babel-loader'],
-        exclude: [/node_modules/, /web_modules/]
-      },
-      {
         test: /\.css$/,
         loader: 'style-loader!css-loader'
       },
@@ -28,8 +23,8 @@ module.exports = {
   entry: [
     'webpack-dev-server/client?http://0.0.0.0:8080',
     'normalize.css',
+    './src/toolkit/theme.css',
     './demo/style.css',
-    './toolkit/theme.css',
     './demo/main.js'
   ],
   plugins: [

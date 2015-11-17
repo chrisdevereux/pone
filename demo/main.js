@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import {render} from 'react-dom';
 
-import {state} from '../core';
+import {state} from '../src/core';
 import {
   disclosedState, valueState,
   Button, Menu, Dropdown, MenuItem, Field, fieldType,
   DropdownSingle, DropdownMulti, ListBoxSingle, ListBoxMulti,
   App, VSplit, RecordView, Form
-} from '../toolkit';
+} from '../src/toolkit';
 
 class Demo extends Component {
   componentWillMount() {
