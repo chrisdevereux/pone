@@ -1,6 +1,7 @@
 import React, {createElement, PropTypes, Component} from 'react';
+import {sharedRegistry as globalEvents} from './event-registry';
 import {
-  compact, flatten, mapValues, pick, arrayify, funcify, stripUndefined
+  compact, flatten, mapValues, pick, arrayify, funcify, stripUndefined, isSymbol
 } from './util';
 
 export default function widget({type, name, css, style, defaults, propTypes, ...propTransforms}) {
@@ -61,6 +62,42 @@ function transformProps(props) {
 }
 
 export class ClosedState extends Component {
+  componentWillMount() {
+    this.handleGlobalEvent = this.handleGlobalEvent.bind(this);
+    this.registerGlobalEvents(this.props.stateDef, {});
+  }
+
+  componentWillReceiveProps(newProps) {
+    this.registerGlobalEvents(newProps.stateDef, this.props.stateDef);
+  }
+
+  registerGlobalEvents(newStateDef, oldStateDef) {
+    for (const key of Object.getOwnPropertySymbols(oldStateDef)) {
+      if (!newStateDef[key]) {
+        globalEvents.unsubscribe(key, this.handleGlobalEvent);
+      }
+    }
+
+    for (const key of Object.getOwnPropertySymbols(newStateDef)) {
+      if (!oldStateDef[key]) {
+        globalEvents.subscribe(key, this.handleGlobalEvent);
+      }
+    }
+  }
+
+  componentWillUnmount() {
+    for (const key of Object.getOwnPropertySymbols(this.props.stateDef)) {
+      globalEvents.unsubscribe(key, this.handleGlobalEvent);
+    }
+  }
+
+  handleGlobalEvent(type, value) {
+    const handler = this.props.stateDef[type];
+    const setState = x => this.setState(x);
+
+    handler(value, {...this.props, ...this.state}, setState);
+  }
+
   render() {
     const {type, props, stateDef} = this.props;
     const stateProps = this.state || {};

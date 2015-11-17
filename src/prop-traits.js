@@ -46,6 +46,14 @@ export function preventDefault() {
   };
 }
 
+export function stopPropagation() {
+  return (value, props) => function(event) {
+    value(event);
+    debugger
+    event.stopPropagation();
+  };
+}
+
 export function wrap(element, bindings = {}) {
   return (value, props) => {
     const {...boundProps, children} = bindProps(bindings, element, props);

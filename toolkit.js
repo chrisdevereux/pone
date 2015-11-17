@@ -1,7 +1,9 @@
 import React, {PropTypes} from 'react';
-import widget, {propTraits} from './index';
+import widget, {propTraits, event, state, picker} from './index';
 
-const {sequence, flags, wrap, compose, preventDefault, enableIf} = propTraits;
+const {
+  sequence, flags, wrap, compose, preventDefault, stopPropagation, enableIf
+} = propTraits;
 
 const handleClicked = compose(
   preventDefault(),
@@ -10,7 +12,7 @@ const handleClicked = compose(
 
 const widgetCSSFlags = flags({
   disabled: 'disabled',
-  'primary': 'primary'
+  primary: 'primary'
 });
 
 const widgetProps = {
@@ -21,6 +23,16 @@ const widgetProps = {
 const clickableProps = {
   onClick: PropTypes.func
 };
+
+export const App = widget({
+  name: 'App',
+  type: 'div',
+  css: ['app'],
+  onClick: () => e => {
+    event.post(onClickRoot, e);
+  }
+})
+export const onClickRoot = Symbol('onClickRoot');
 
 export const Button = widget({
   name: 'Button',
@@ -43,10 +55,11 @@ export const Menu = widget({
 export const MenuItem = widget({
   name: 'MenuItem',
   type: 'li',
-  css: ['menu-item', widgetCSSFlags],
+  css: ['menu-item', widgetCSSFlags, flags({active: 'active'})],
   propTypes: {
     ...widgetProps,
-    ...clickableProps
+    ...clickableProps,
+    active: PropTypes.bool
   },
   children: wrap(<a href='#'/>, {onClick: handleClicked}),
   onClick: handleClicked
@@ -66,7 +79,21 @@ export const Dropdown = widget({
     onDisclose: () => {}
   },
   children: (children, {onDisclose, disclosed, title}) => [
-    <Button onClick={onDisclose}>{title} ▾</Button>,
+    <Button onClick={e => {onDisclose(); e.stopPropagation()}}>{title} ▾</Button>,
     disclosed && <Menu>{children}</Menu>
   ]
 });
+
+export const ListBoxSingle = picker.single('ListBoxSingle', Menu, MenuItem);
+export const ListBoxMulti = picker.multiple('ListBoxMulti', Menu, MenuItem);
+export const DropdownSingle = picker.single('DropdownSingle', Dropdown, MenuItem);
+export const DropdownMulti = picker.single('DropdownMulti', Dropdown, MenuItem);
+
+export const disclosedState = {
+  onDisclose: state.toggle('disclosed'),
+  [onClickRoot]: state.set({disclosed: false})
+};
+
+export const valueState = {
+  onChange: state.bind('value')
+};

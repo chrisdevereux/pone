@@ -11,6 +11,10 @@
   outline: none;
 }
 
+.button, .menu-item {
+  user-select: none;
+}
+
 
 /** Menu / MenuItem **/
 
@@ -23,6 +27,12 @@
 .menu-item {
   padding: 0.5em 1.5em;
   cursor: pointer;
+}
+
+.menu-item.active,
+.menu-item.active:hover {
+  color: white;
+  background-color: red;
 }
 
 .menu-item:first-child {
