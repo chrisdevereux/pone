@@ -1,5 +1,5 @@
 import {createElement} from 'react';
-import {mapValues, compact, arrayify} from './util';
+import {mapValues, compact, arrayify, stripUndefined} from './util';
 
 export function compose(...fns) {
   return (value, props) =>
@@ -49,7 +49,6 @@ export function preventDefault() {
 export function stopPropagation() {
   return (value, props) => function(event) {
     value(event);
-    debugger
     event.stopPropagation();
   };
 }
@@ -59,6 +58,25 @@ export function wrap(element, bindings = {}) {
     const {...boundProps, children} = bindProps(bindings, element, props);
     return createElement(element.type, boundProps, ...arrayify(value));
   };
+}
+
+export function map(fn) {
+  return (children, parentProps) => arrayify(children).map(x => fn(x, parentProps));
+}
+
+export function transformChildren(fn) {
+  return (children, parentProps) => {
+    const transform = (nodes) =>
+      arrayify(nodes).map(({type, props}) => {
+        const transformedProps = fn(props, parentProps);
+        stripUndefined(transformedProps);
+
+        return createElement(type, {...props, ...transformedProps}, ...transform(props.children));
+      })
+    ;
+
+    return transform(children);
+  }
 }
 
 function bindProps(bindings, element, parentProps) {

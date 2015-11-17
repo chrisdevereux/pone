@@ -9,7 +9,7 @@
     "react": "^0.14.2",
     "react-dom": "^0.14.2"
   },
-  "main": "index.js",
+  "main": "core/index.js",
   "devDependencies": {
     "babel-core": "^6.1.4",
     "babel-eslint": "^4.1.5",
@@ -38,7 +38,7 @@
   },
   "scripts": {
     "start": "$(npm bin)/webpack-dev-server --config demo/webpack.config.js --history-api-fallback --content-base demo",
-    "test": "$(npm bin)/mocha --compilers js:babel-core/register src/**/*.test.js",
-    "watch": "$(npm bin)/mocha --watch --compilers js:babel-core/register src/**/*.test.js"
+    "test": "$(npm bin)/mocha --compilers js:babel-core/register core/**/*.test.js",
+    "watch": "$(npm bin)/mocha --watch --compilers js:babel-core/register core/**/*.test.js"
   }
 }
