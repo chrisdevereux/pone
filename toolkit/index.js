@@ -178,6 +178,25 @@ export const ControlGroup = widget({
   css: ['control-group']
 });
 
+export const HelpText = widget({
+  name: 'HelpText',
+  css: ['help-text']
+});
+
+export const Form = widget({
+  name: 'Form',
+  css: ['form'],
+  children: compose(
+    map(el =>
+      <div style={{display: 'table-row'}}>
+        <div style={{display: 'table-cell'}} className='form-label'>{el.props.title}: </div>
+        <div style={{display: 'table-cell'}} className='form-item'>{el}</div>
+      </div>
+    ),
+    wrap(<div style={{display: 'table'}}/>)
+  )
+});
+
 export const disclosedState = {
   onDisclose: state.toggle('disclosed'),
   [onClickRoot]: state.set({disclosed: false})

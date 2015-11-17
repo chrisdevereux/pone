@@ -6,7 +6,7 @@ import {
   disclosedState, valueState,
   Button, Menu, Dropdown, MenuItem, Field, fieldType,
   DropdownSingle, DropdownMulti, ListBoxSingle, ListBoxMulti,
-  App, VSplit, RecordView,
+  App, VSplit, RecordView, Form
 } from '../toolkit';
 
 class Demo extends Component {
@@ -83,8 +83,10 @@ class Demo extends Component {
         <h4>Record View</h4>
         <VSplit>
           <RecordView value={this.state.record} onChange={setState('record')}>
-            <Field binding='name'/>
-            <Field binding='age' type={fieldType.integer}/>
+            <Form>
+              <Field title='Name' binding='name'/>
+              <Field title='Age' binding='age' type={fieldType.integer}/>
+            </Form>
           </RecordView>
           <div>
             {JSON.stringify(this.state.record, null, 4)}

@@ -68,10 +68,10 @@ export function transformChildren(fn) {
   return (children, parentProps) => {
     const transform = (nodes) =>
       arrayify(nodes).map(({type, props}) => {
-        const transformedProps = fn(props, parentProps);
+        const transformedProps = {...props, ...fn(props, parentProps)};
         stripUndefined(transformedProps);
 
-        return createElement(type, {...props, ...transformedProps}, ...transform(props.children));
+        return createElement(type, transformedProps, ...transform(props.children));
       })
     ;
 
