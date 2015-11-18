@@ -82,4 +82,44 @@ describe('prop-traits', function() {
       expect(subject(undefined, {items: [1, 2, 3]})).to.eql([2, 4, 6]);
     });
   });
+
+  describe('map', function() {
+    it('should map objects', function() {
+      const subject = traits.map((object, props) => object * props.factor);
+      expect(subject([10], {factor: 2})).to.eql([20]);
+    });
+  });
+
+  describe('transformChildren', function() {
+    it('should transform children', function() {
+      const children = [
+        {
+          type: 'div',
+          props: {a: 1, b: 2, children: [
+            'hello',
+            {
+              type: 'div',
+              props: {a: 2, b: 3}
+            }
+          ]}
+        }
+      ];
+      const subject = traits.transformChildren((childProps, props) =>
+        ({a10: childProps.a * props.factor})
+      );
+
+      const result = subject(children, {factor: 10});
+
+      expect(result[0]).to.have.property('type', 'div');
+      expect(result[0].props).to.have.property('a', 1);
+      expect(result[0].props).to.have.property('b', 2);
+      expect(result[0].props).to.have.property('a10', 10);
+
+      expect(result[0].props.children[0]).to.eql('hello');
+      expect(result[0].props.children[1]).to.have.property('type', 'div');
+      expect(result[0].props.children[1].props).to.have.property('a', 2);
+      expect(result[0].props.children[1].props).to.have.property('b', 3);
+      expect(result[0].props.children[1].props).to.have.property('a10', 20);
+    });
+  });
 });
