@@ -34,6 +34,8 @@
     "eslint-plugin-babel": "^2.1.1",
     "eslint-plugin-react": "^3.8.0",
     "file-loader": "^0.8.4",
+    "isparta": "^4.0.0",
+    "istanbul": "^0.4.0",
     "mocha": "^2.3.3",
     "normalize.css": "^3.0.3",
     "react-addons-test-utils": "^0.14.2",
@@ -46,8 +48,8 @@
   },
   "scripts": {
     "start": "$(npm bin)/webpack-dev-server --config demo/webpack.config.js --history-api-fallback --content-base demo",
-    "test": "$(npm bin)/mocha --compilers js:babel-core/register core/**/*.test.js",
-    "watch": "$(npm bin)/mocha --watch --compilers js:babel-core/register core/**/*.test.js",
-    "prepublish": "sh scripts/prepublish.sh"
+    "test": "sh build.sh && $(npm bin)/istanbul -x '*.test.js' cover $(npm bin)/_mocha 'core/**/*.test.js'",
+    "watch": "$(npm bin)/mocha --watch --compilers js:babel-core/register 'src/**/*.test.js'",
+    "prepublish": "sh build.sh"
   }
 }

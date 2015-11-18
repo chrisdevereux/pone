@@ -4,22 +4,5 @@
     "stage-2",
     "react"
   ],
-  "env": {
-    "preview": {
-      "plugins": [
-        "react-transform"
-      ],
-      "extra": {
-        "react-transform": {
-          "transforms": [
-            {
-              "transform": "react-transform-hmr",
-              "imports": ["react"],
-              "locals": ["module"]
-            }
-          ]
-        }
-      }
-    }
-  }
+  "sourceMaps": "inline"
 }
