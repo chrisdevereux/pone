@@ -7,6 +7,10 @@
     "type": "git",
     "url": "https://github.com/chrisdevereux/pone.git"
   },
+  "scripts": {
+    "test": "../../node_modules/.bin/mocha src/**/*.js",
+    "watch": "../../node_modules/.bin/mocha --watch src/**/*.js"
+  },
   "license": "ISC",
   "dependencies": {
     "lodash-fp": "^0.10.2",
@@ -16,5 +20,5 @@
   "peerDependencies": {
     "react-dom": "^0.14.2"
   },
-  "main": "core/index.js"
+  "main": "pone.js"
 }

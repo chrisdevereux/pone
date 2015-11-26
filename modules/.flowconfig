@@ -2,7 +2,10 @@
 .*/node_modules/.*/node_modules/.*
 
 [include]
+../node_modules/skin-deep/
+../node_modules/chai/
 
 [libs]
+../interfaces/
 
 [options]
