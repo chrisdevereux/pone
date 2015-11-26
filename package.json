@@ -1,22 +1,14 @@
 {
-  "name": "pone",
-  "version": "0.1.2",
+  "name": "pone-dev",
+  "version": "0.2",
   "description": "A functional wrapper for React's component API and optional base widget toolkit",
   "author": "Chris Devereux",
   "repository": {
     "type": "git",
     "url": "https://github.com/chrisdevereux/pone.git"
   },
+  "private": true,
   "license": "ISC",
-  "dependencies": {
-    "lodash": "^3.10.1",
-    "react": "^0.14.2",
-    "react-dom": "^0.14.2"
-  },
-  "peerDependencies": {
-    "react-dom": "^0.14.2"
-  },
-  "main": "core/index.js",
   "devDependencies": {
     "babel-cli": "^6.1.18",
     "babel-core": "^6.1.4",
