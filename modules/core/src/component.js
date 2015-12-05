@@ -3,11 +3,6 @@
 import {createElement} from 'react';
 import {mapValues, reduce, constant} from 'lodash-fp';
 
-type StatelessReactComponent = {
-  (props: Dict<Renderer<{}>>): {},
-  displayName: string
-};
-
 type Dict<T> = {[index: string]: T};
 
 type Renderer<T> = {
@@ -28,8 +23,7 @@ type ComponentTrait = {
 
 
 export default function component(...traits: ComponentTrait[]): ReactClass {
-  const renderSpec = reduce(applyTrait, baseComponent);
-  const componentSpec = renderSpec(traits);
+  const componentSpec = reduce(applyTrait, baseComponent, traits);
 
   const propRenderers = componentSpec.props;
   const renderType = componentSpec.type;
